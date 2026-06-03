@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hiragana Placement Test</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f6fb;margin:0;padding:20px}
+.container{max-width:900px;margin:auto;background:#fff;padding:25px;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.1)}
+h1{text-align:center}
+.question{margin:18px 0;padding:15px;border:1px solid #ddd;border-radius:10px}
+.qtitle{font-weight:bold;margin-bottom:10px}
+button{padding:12px 20px;border:none;border-radius:8px;background:#4f46e5;color:white;cursor:pointer}
+#result{display:none;margin-top:20px;padding:20px;border-radius:10px;background:#eef}
+.progress{height:20px;background:#ddd;border-radius:10px;margin-bottom:20px}
+.bar{height:100%;width:100%;background:#4f46e5;border-radius:10px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Hiragana Placement Test (25 Soal)</h1>
+<div class="progress"><div class="bar"></div></div>
+<form id="quiz"></form>
+<button onclick="checkQuiz()" type="button">Lihat Hasil</button>
+<div id="result"></div>
+</div>
+
+<script>
+const questions = [
+["あ","a",["a","i","u","e"]],
+["き","ki",["ki","ka","ke","ku"]],
+["し","shi",["shi","sa","su","chi"]],
+["つ","tsu",["tsu","te","to","chi"]],
+["ね","ne",["na","ne","nu","no"]],
+["ふ","fu",["hu","fu","ho","ha"]],
+["め","me",["mo","me","ma","mu"]],
+["ゆ","yu",["yo","yu","ya","yo"]],
+["れ","re",["ri","ra","re","ro"]],
+["を","wo",["wa","o","wo","n"]],
+["ka","か",["か","き","け","こ"]],
+["nu","ぬ",["ね","な","ぬ","の"]],
+["yo","よ",["ゆ","や","よ","ら"]],
+["mi","み",["め","ま","む","み"]],
+["ro","ろ",["ろ","れ","る","ら"]],
+["ねこ","neko",["inu","neko","sora","mizu"]],
+["さくら","sakura",["sakura","sayonara","suzuki","sakana"]],
+["みず","mizu",["mado","michi","mizu","momo"]],
+["くるま","kuruma",["kuruma","kuma","kuroi","kutsu"]],
+["やま","yama",["yume","yama","yuki","yoru"]],
+["sushi","すし",["すし","さし","せし","そし"]],
+["tomodachi","ともだち",["ともだち","とまだち","ともたち","とみだち"]],
+["nihon","にほん",["にほん","にほんん","にひん","ねほん"]],
+["sensei","せんせい",["せんせい","さんせい","せんさい","せんしい"]],
+["gakusei","がくせい",["がくせい","かくせい","がくさい","がこせい"]]
+];
+
+const form=document.getElementById("quiz");
+
+questions.forEach((q,i)=>{
+ let div=document.createElement("div");
+ div.className="question";
+ let html=`<div class='qtitle'>${i+1}. ${q[0]}</div>`;
+ q[2].forEach(opt=>{
+   html += `<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label><br>`;
+ });
+ div.innerHTML=html;
+ form.appendChild(div);
+});
+
+function checkQuiz(){
+ let score=0;
+ let wrong=[];
+ questions.forEach((q,i)=>{
+   let sel=document.querySelector(`input[name=q${i}]:checked`);
+   if(sel && sel.value===q[1]) score++;
+   else wrong.push(`${i+1}. Jawaban benar: ${q[1]}`);
+ });
+
+ let level="";
+ if(score<=8) level="Belum Menguasai Hiragana";
+ else if(score<=15) level="Dasar";
+ else if(score<=20) level="Menengah";
+ else if(score<=23) level="Mahir";
+ else level="Sangat Mahir";
+
+ let result=document.getElementById("result");
+ result.style.display="block";
+ result.innerHTML=`
+ <h2>Hasil</h2>
+ <p><b>Skor:</b> ${score}/25</p>
+ <p><b>Level:</b> ${level}</p>
+ <h3>Jawaban Salah</h3>
+ <ul>${wrong.map(x=>`<li>${x}</li>`).join("")}</ul>
+ `;
+ window.scrollTo(0,document.body.scrollHeight);
+}
+</script>
+</body>
+</html>
